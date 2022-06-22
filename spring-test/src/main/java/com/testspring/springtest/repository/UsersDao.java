@@ -7,5 +7,6 @@ import com.testspring.springtest.model.Users;
 
 @Repository
 public interface UsersDao extends JpaRepository<Users,Integer> {
-   
+
+
 }

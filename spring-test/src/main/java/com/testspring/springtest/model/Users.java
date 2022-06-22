@@ -19,6 +19,7 @@ public class Users {
     int userId;
     String userName;
     String userSurname;
+
     Users() {}
     public String getUserName() {
         return this.userName;
@@ -26,6 +27,19 @@ public class Users {
 
     public String getUserSurname() {
         return this.userSurname;
+    }
+    public int getUserIde() {
+        return this.userId;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserSurname(String userSurname) {
+        this.userSurname = userSurname;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     
 }
