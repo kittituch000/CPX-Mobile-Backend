@@ -5,12 +5,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testspring.springtest.repository.UsersDao;
 
 import antlr.collections.List;
+import lombok.extern.log4j.Log4j2;
 
 import com.testspring.springtest.model.Users;
+import com.testspring.springtest.service.Customer;
+import com.testspring.springtest.service.Producer;
 import com.testspring.springtest.service.Userss;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -19,9 +24,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@Log4j2
 public class testSpringBoot {
 
     @Autowired
@@ -77,6 +84,17 @@ public class testSpringBoot {
        return "delete sucess";
 
     }
+
+    @Autowired
+	private Producer producer;
+
+	@GetMapping(value = "/questions13")
+	public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
+		this.producer.produce(message);
+	}
+
+
+
     
     
 }
