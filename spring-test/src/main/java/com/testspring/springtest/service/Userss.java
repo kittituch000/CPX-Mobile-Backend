@@ -1,6 +1,7 @@
 package com.testspring.springtest.service;
 
 public class Userss {
+    int userId;
     String userName;
     String userSurname;    
 
@@ -10,6 +11,9 @@ public class Userss {
 
     public void setUserSurname(String userSurname) {
         this.userSurname = userSurname;
+    }
+    public void setuserIde(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
