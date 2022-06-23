@@ -3,13 +3,15 @@ package com.testspring.springtest.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import com.testspring.springtest.repository.UsersDao;
 
 import antlr.collections.List;
 import lombok.extern.log4j.Log4j2;
 
 import com.testspring.springtest.model.Users;
-import com.testspring.springtest.service.Customer;
+import com.testspring.springtest.service.CreateUser;
+import com.testspring.springtest.service.Customer2;
 import com.testspring.springtest.service.Producer;
 import com.testspring.springtest.service.UserValidator;
 import com.testspring.springtest.service.Userss;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @RestController
@@ -43,6 +46,7 @@ public class testSpringBoot {
 
     @PostMapping("/questions7")
     public String postBody(@RequestBody Users user) {
+        System.out.println(user);
         userDao.save(user);
         return "insert success";
 
@@ -103,7 +107,6 @@ public class testSpringBoot {
             return "insert success2";
         }catch(ResponseStatusException error)
         {
-
             throw new ResponseStatusException(error.getStatus(),error.getMessage());
         }
         
@@ -115,14 +118,19 @@ public class testSpringBoot {
         try{
             question14_2.validatorUser2();
             return "insert success2";
-        }catch(ResponseStatusException error)
-        {
+        }catch(ResponseStatusException error){
 
             throw new ResponseStatusException(error.getStatus(),error.getMessage());
         }
-        
-
     }
+
+    @PostMapping("/questions15")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String questions15(@RequestBody Users user) {
+        CreateUser createUser = new CreateUser();
+        return createUser.createUser(user, userDao);
+    }
+
 
 
     

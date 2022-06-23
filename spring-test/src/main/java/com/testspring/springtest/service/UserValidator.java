@@ -1,6 +1,6 @@
 package com.testspring.springtest.service;
 
-import java.lang.module.ResolutionException;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
+
 @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
 
 public class UserValidator {
@@ -23,7 +24,6 @@ public class UserValidator {
     public void setUserSurname(String userSurname) {
         this.userSurname = userSurname;
     }
-
 
     public String validatorUser() {
         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "test1234");

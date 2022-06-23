@@ -9,9 +9,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Customer{
+public class Customer2{
 
-	private static final Logger logger = LogManager.getFormatterLogger( Customer.class);
+	private static final Logger logger = LogManager.getFormatterLogger( Customer2.class);
 
 	@KafkaListener(topics = "kafka", groupId = "myGroup")
 	public void consume(String message) throws IOException {
