@@ -1,6 +1,7 @@
 package com.testspring.springtest.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.testspring.springtest.repository.UsersDao;
 
@@ -10,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import com.testspring.springtest.model.Users;
 import com.testspring.springtest.service.Customer;
 import com.testspring.springtest.service.Producer;
+import com.testspring.springtest.service.UserValidator;
 import com.testspring.springtest.service.Userss;
 
 import org.apache.catalina.connector.Response;
@@ -93,6 +95,34 @@ public class testSpringBoot {
 		this.producer.produce(message);
 	}
 
+    @PostMapping("/questions14")
+    public String questions14() {
+        UserValidator question14 = new UserValidator();
+        try{
+            question14.validatorUser();
+            return "insert success2";
+        }catch(ResponseStatusException error)
+        {
+
+            throw new ResponseStatusException(error.getStatus(),error.getMessage());
+        }
+        
+
+    }
+    @PostMapping("/questions14_2")
+    public String questions14_2() {
+        UserValidator question14_2 = new UserValidator();
+        try{
+            question14_2.validatorUser2();
+            return "insert success2";
+        }catch(ResponseStatusException error)
+        {
+
+            throw new ResponseStatusException(error.getStatus(),error.getMessage());
+        }
+        
+
+    }
 
 
     
