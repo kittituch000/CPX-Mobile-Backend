@@ -1,46 +1,39 @@
 package com.testspring.springtest.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 
 @Entity
+@Table(name = "users", schema = "public")
+@ToString
+@AllArgsConstructor
+@EqualsAndHashCode
 @Setter
 @Getter
 public class Users {
+    public Users(){}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int userId;
-    String userName;
-    String userSurname;
+    @Column(name ="user_id")
+    private int userId;
 
-    Users() {}
-    public String getUserName() {
-        return this.userName;
-    }
+    @Column(name ="user_name")
+    private String userName;
 
-    public String getUserSurname() {
-        return this.userSurname;
-    }
-    public int getUserIde() {
-        return this.userId;
-    }
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setUserSurname(String userSurname) {
-        this.userSurname = userSurname;
-    }
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    @Column(name ="user_surname")
+    private String userSurname;
     
 }
 

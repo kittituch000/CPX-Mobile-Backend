@@ -1,20 +1,20 @@
 package com.testspring.springtest.controller;
-
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 
 import com.testspring.springtest.repository.UsersDao;
 
-import antlr.collections.List;
-import lombok.extern.log4j.Log4j2;
+import lombok.AllArgsConstructor;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.testspring.springtest.model.Users;
-import com.testspring.springtest.service.CreateUser;
+import com.testspring.springtest.service.CRUDUser;
 import com.testspring.springtest.service.Customer2;
 import com.testspring.springtest.service.Producer;
 import com.testspring.springtest.service.UserValidator;
-import com.testspring.springtest.service.Userss;
+
+import java.util.Optional;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,91 +33,110 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @RestController
-@Log4j2
+@AllArgsConstructor
 public class testSpringBoot {
+    @Autowired
+	private Producer producer;
 
     @Autowired
     UsersDao userDao;
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/questions2")
     public String Questions2 () {
+
         return "Hello Backend Team";
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/questions7")
-    public String postBody(@RequestBody Users user) {
-        System.out.println(user);
-        userDao.save(user);
-        return "insert success";
+    public void postBody(@RequestBody Users user) {
+        CRUDUser createUser = new CRUDUser();
+        createUser.createUser(user, userDao);
 
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/questions8/{id}")
-    public Object Questions8(@PathVariable String id) {    
-        return  userDao.findById(Integer.parseInt(id));
+    public Optional<Users> Questions8(@PathVariable String id) {  
+        CRUDUser crudUser = new CRUDUser();  
+        return  crudUser.getUser(Integer.parseInt(id), userDao);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/questions9")
-    public Object Questions9() {    
-        return  userDao.findAll();
+    public java.util.List<Users> Questions9() {    
+        CRUDUser crudUser = new CRUDUser(); 
+
+        return  crudUser.getUsers(userDao);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/questions10/{id}")
-    public String Questions10(@RequestBody Users user , @PathVariable String id ) {   
+    public void Questions10(@RequestBody Users user , @PathVariable String id ) { 
+        CRUDUser createUser = new CRUDUser();  
         user.setUserId(Integer.parseInt(id));
-        userDao.save(user);
-       return "sucess";
+        createUser.createUser(user, userDao);
 
     }
     @PatchMapping("/questions11/{id}")
-    public String Questions11(@RequestBody Users user , @PathVariable String id ) { 
+    public void Questions11(@RequestBody Users user , @PathVariable String id ) { 
         user.setUserId(Integer.parseInt(id));
+        CRUDUser crudUser = new CRUDUser(); 
+        Optional<Users> userUpdate  = crudUser.getUser(Integer.parseInt(id), userDao);
 
         if((user.getUserName() == null) & user.getUserSurname() == null)  {
-            return "not update";
+            throw new ResponseStatusException(400,"user and surname is requrie", null);
         } 
+
         else if(user.getUserName() == null) {
-            return "not update";
+            user.setUserName(userUpdate.get().getUserName());
+            crudUser.createUser(user, userDao);
         } 
-        userDao.save(user);
-       return "sucess";
 
+        else if(user.getUserSurname() == null) {
+            user.setUserSurname(userUpdate.get().getUserSurname());
+            crudUser.createUser(user, userDao);
+        } 
     }
-
+    
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/questions12/{id}")
-    public String Questions12( @PathVariable String id ) {   
-        userDao.deleteById(Integer.parseInt(id));
-       return "delete sucess";
+    public void Questions12( @PathVariable String id ) {   
+        CRUDUser crudUser = new CRUDUser();
+        crudUser.deleteUser(Integer.parseInt(id), userDao);
 
     }
 
-    @Autowired
-	private Producer producer;
-
+    @ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/questions13")
 	public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
-		this.producer.produce(message);
+		producer.produce(message);
 	}
 
     @PostMapping("/questions14")
-    public String questions14() {
-        UserValidator question14 = new UserValidator();
-        try{
-            question14.validatorUser();
-            return "insert success2";
-        }catch(ResponseStatusException error)
-        {
-            throw new ResponseStatusException(error.getStatus(),error.getMessage());
-        }
-        
+    public void questions14(@RequestBody Users user ) {
 
+        if((user.getUserName() == null) & user.getUserSurname() == null)  {
+            throw new ResponseStatusException(400,"user and surname is requrie", null);
+        } 
+
+        else if(user.getUserName() == null) {
+            throw new ResponseStatusException(400,"username is requrie", null);
+        } 
+
+        else if(user.getUserSurname() == null) {
+            throw new ResponseStatusException(400,"surname is requrie", null);
+        } 
+    
     }
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/questions14_2")
-    public String questions14_2() {
+    public void questions14_2() {
         UserValidator question14_2 = new UserValidator();
         try{
-            question14_2.validatorUser2();
-            return "insert success2";
+            question14_2.validatorUser2();   
         }catch(ResponseStatusException error){
 
             throw new ResponseStatusException(error.getStatus(),error.getMessage());
@@ -126,13 +145,9 @@ public class testSpringBoot {
 
     @PostMapping("/questions15")
     @ResponseStatus(HttpStatus.CREATED)
-    public String questions15(@RequestBody Users user) {
-        CreateUser createUser = new CreateUser();
-        return createUser.createUser(user, userDao);
+    public void questions15(@RequestBody Users user) {
+        CRUDUser createUser = new CRUDUser();
+        createUser.createUser(user, userDao);
     }
 
-
-
-    
-    
 }

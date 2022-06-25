@@ -25,11 +25,11 @@ public class UserValidator {
         this.userSurname = userSurname;
     }
 
-    public String validatorUser() {
+    public void validatorUser() {
         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "test1234");
         
     }
-    public String validatorUser2() {
+    public void validatorUser2() {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BAD_REQUEST");
         
     }
