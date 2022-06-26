@@ -11,10 +11,13 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.testspring.springtest.model.Users;
 import com.testspring.springtest.service.CRUDUser;
 import com.testspring.springtest.service.Customer2;
+import com.testspring.springtest.service.JwtService;
 import com.testspring.springtest.service.Producer;
 import com.testspring.springtest.service.UserValidator;
 
+import java.util.Base64;
 import java.util.Optional;
+import java.util.Base64.Decoder;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -148,6 +152,17 @@ public class testSpringBoot {
     public void questions15(@RequestBody Users user) {
         CRUDUser createUser = new CRUDUser();
         createUser.createUser(user, userDao);
+    }
+
+    @GetMapping("/questions19")
+    @ResponseStatus(HttpStatus.OK)
+    public String questions19(@RequestHeader("Authorization") String token) {
+        JwtService jwtService = new JwtService();
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String[] chunks = token.substring(token.lastIndexOf(" ") + 1).split("\\.");
+        String payload = new String(decoder.decode(chunks[1]));
+        return payload;
+         
     }
 
 }
