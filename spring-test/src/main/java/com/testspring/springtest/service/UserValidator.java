@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
-
 @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
 
 public class UserValidator {
